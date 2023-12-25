@@ -52,13 +52,13 @@ candidate_size = args.candidate_size
 threshold = args.threshold
 
 if net_type == 'slim':
-    model_path = "models/pretrained/version-slim-320.pth"
-    # model_path = "models/pretrained/version-slim-640.pth"
+    # model_path = "models/pretrained/version-slim-320.pth"
+    model_path = "models/pretrained/version-slim-640.pth"
     net = create_mb_tiny_fd(len(class_names), is_test=True, device=test_device)
     predictor = create_mb_tiny_fd_predictor(net, candidate_size=candidate_size, device=test_device)
 elif net_type == 'RFB':
-    model_path = "models/pretrained/version-RFB-320.pth"
-    # model_path = "models/pretrained/version-RFB-640.pth"
+    # model_path = "models/pretrained/version-RFB-320.pth"
+    model_path = "models/pretrained/version-RFB-640.pth"
     net = create_Mb_Tiny_RFB_fd(len(class_names), is_test=True, device=test_device)
     predictor = create_Mb_Tiny_RFB_fd_predictor(net, candidate_size=candidate_size, device=test_device)
 else:
@@ -69,7 +69,7 @@ offset = 20
 timer = Timer()
 sum = 0
 counter = 0
-folder = 'data_face/phu/'
+folder = 'data_face/tphu/'
 while True:
     ret, orig_image = cap.read()
     if orig_image is None:
@@ -101,7 +101,7 @@ while True:
     cv2.imshow('annotated', orig_image)
     if cv2.waitKey(1) == ord('s'):
         counter  += 1
-        cv2.imwrite(f'{folder}/image_{counter}_dphu.jpg',img_resized)
+        cv2.imwrite(f'{folder}/image_{counter}_tphu.jpg',img_resized)
         print(counter)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

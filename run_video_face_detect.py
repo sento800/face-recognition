@@ -1,6 +1,3 @@
-"""
-This code uses the pytorch model to detect faces from live video or camera.
-"""
 import argparse
 import sys
 import cv2
@@ -68,9 +65,7 @@ else:
 net.load(model_path)
 offset = 20
 timer = Timer()
-sum = 0
 counter = 0
-folder = 'data_face/phu/'
 while True:
     ret, orig_image = cap.read()
     if orig_image is None:
@@ -92,19 +87,19 @@ while True:
 
             cv2.rectangle(orig_image, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (0, 255, 0), 4)
             img_resized = cv2.resize(imgCrop,(160, 160))
+            # cv2.imshow('crop',img_resized)
 
-            a = predict_face()
+
+            a = predict_face(img_resized)
 
             cv2.putText(orig_image, a,
                         (int(box[0]), int(box[1]) - 10),cv2.FONT_HERSHEY_SIMPLEX,0.5,  (0, 0, 255),2)        
     except:
         continue
     cv2.putText(orig_image,str(int(fps)),(10,70), cv2.FONT_HERSHEY_PLAIN,3,(255,0,255),3)
-    orig_image = cv2.resize(orig_image, None, None, fx=0.8, fy=0.8)
-    sum += boxes.size(0)
+    # orig_image = cv2.resize(orig_image, None, None, fx=0.8, fy=0.8)
     cv2.imshow('annotated', orig_image)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 cap.release()
 cv2.destroyAllWindows()
-print("all face num:{}".format(sum))
