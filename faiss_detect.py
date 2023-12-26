@@ -3,9 +3,6 @@ from sklearn.model_selection import train_test_split
 from keras_facenet import FaceNet
 import faiss
 import pickle
-from tensorflow.keras import models
-from keras.models import load_model
-import tensorflow as tf
 
 def _load_pickle(file_path):
     with open(file_path, 'rb') as f:
@@ -48,6 +45,12 @@ def facenet_process_img(img):
     detections = embedder.extract(img)
     embed = detections[0]['embedding']
     return embed
+# img = './data_face/dphu/image_100_dphu.jpg'
+# def ArcFace_process_img(img):
+#     face_rec = ArcFace.ArcFace()
+#     emb1 = face_rec.calc_emb(img)
+#     emb1
+#     return emb1
 def predict_face(img):
     embed_detect = np.array([facenet_process_img(img)])
     faiss = Faiss('euclidean'  , X_train.shape[1] , X_train , y_train)
@@ -57,8 +60,6 @@ def predict_face(img):
         return i
     else:
         return y_train[i[0][0]]
-# a = predict_face(img)
-# print(a)
 
 
 
