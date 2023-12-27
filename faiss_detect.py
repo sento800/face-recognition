@@ -1,20 +1,22 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
 from keras_facenet import FaceNet
 import faiss
 import pickle
+from arcface import ArcFace
+import threading
 
 def _load_pickle(file_path):
     with open(file_path, 'rb') as f:
         obj = pickle.load(f)
     return obj
 
-embed = _load_pickle('./file_model/pkl_files/embeds_test_2.pkl')
-labels = _load_pickle('./file_model/pkl_files/labels_test_2.pkl')
+
+embed = _load_pickle('./embedded/pkl_files/arc_embeds_final.pkl')
+labels = _load_pickle('./embedded/pkl_files/arc_labels_final.pkl')
+# embed = _load_pickle('./file_model/pkl_files/embeds_final.pkl')
+# labels = _load_pickle('./file_model/pkl_files/labels_final.pkl')
 
 ids = np.arange(len(labels))
-X_train, x_text, y_train, y_text, id_train, id_test = train_test_split(np.stack(embed), labels, ids, test_size = 0.2,stratify = labels , random_state=42)
-
 class Faiss:
     def __init__(self , metric : str , d : int , data , labels):
         self.metric = metric
@@ -40,26 +42,35 @@ class Faiss:
         else:
             return "Unknown"
 
-def facenet_process_img(img):
-    embedder = FaceNet()
-    detections = embedder.extract(img)
-    embed = detections[0]['embedding']
-    return embed
+# def facenet_process_img(img):
+#     embedder = FaceNet()
+#     detections = embedder.extract(img)
+#     embed = detections[0]['embedding']
+#     return embed
+
 # img = './data_face/dphu/image_100_dphu.jpg'
-# def ArcFace_process_img(img):
-#     face_rec = ArcFace.ArcFace()
-#     emb1 = face_rec.calc_emb(img)
-#     emb1
-#     return emb1
+# img2 = './data_face/dphu/image_101_dphu.jpg'
+
+def ArcFace_process_img(img):
+    face_rec = ArcFace.ArcFace()
+    emb1 = face_rec.calc_emb(img)
+    emb1
+    return emb1
+
 def predict_face(img):
-    embed_detect = np.array([facenet_process_img(img)])
-    faiss = Faiss('euclidean'  , X_train.shape[1] , X_train , y_train)
+    embed_detect = np.array([ArcFace_process_img(img)])
+    faiss = Faiss('euclidean'  , 512 , np.stack(embed) , labels)
     faiss.add_data()
-    i = faiss.predict(embed_detect,2)
+    i = faiss.predict(embed_detect,5)
     if type(i) is str:
-        return i
+        predict =  i
     else:
-        return y_train[i[0][0]]
+        predict = labels[i[0][0]]
+    return predict
+
+
+
+
 
 
 
