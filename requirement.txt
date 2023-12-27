@@ -1,0 +1,5 @@
+pip install opencv-python
+pip install -U ultralight
+pip install faiss-cpu
+pip install astropy
+pip install arcface
