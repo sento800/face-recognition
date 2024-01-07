@@ -2,10 +2,9 @@ import cv2
 import time
 from ultralight import UltraLightDetector
 from faiss_detect import predict_face
-from threading import Thread
 pTime = 0 
 cTime = 0
-video_capture ='./imgvideo.mp4'
+video_capture ='./imgvideo2.mp4'
 # cap = cv2.VideoCapture(0) #camera capture
 cap = cv2.VideoCapture(video_capture) #video capture
 detector = UltraLightDetector(providers=['CPUExecutionProvider'])

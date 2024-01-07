@@ -1,7 +1,6 @@
 pip install opencv-python
 pip install -U ultralight
 pip install faiss-cpu
-pip install astropy
-pip install arcface
-https://www.digidow.eu/f/datasets/arcface-tensorflowlite/model.tflite
 pip install keras-facenet
+pip install SciPy
+pip install tensorflow
