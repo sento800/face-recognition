@@ -5,10 +5,10 @@ from faiss_detect import predict_face
 from threading import Thread
 pTime = 0 
 cTime = 0
-cap = cv2.VideoCapture(0)
-detector = UltraLightDetector(providers=['AzureExecutionProvider'])
-count =5
-k=[]
+video_capture ='./imgvideo.mp4'
+# cap = cv2.VideoCapture(0) #camera capture
+cap = cv2.VideoCapture(video_capture) #video capture
+detector = UltraLightDetector(providers=['CPUExecutionProvider'])
 while True:
     success, img = cap.read()
     boxes, scores = detector.detect_one(img)

@@ -1,9 +1,9 @@
 import numpy as np
-from keras_facenet import FaceNet
 import faiss
 import pickle
+from keras_facenet import FaceNet
 from arcface import ArcFace
-import threading
+import cv2
 
 def _load_pickle(file_path):
     with open(file_path, 'rb') as f:
@@ -13,8 +13,8 @@ def _load_pickle(file_path):
 
 embed = _load_pickle('./embedded/pkl_files/arc_embeds_final.pkl')
 labels = _load_pickle('./embedded/pkl_files/arc_labels_final.pkl')
-# embed = _load_pickle('./file_model/pkl_files/embeds_final.pkl')
-# labels = _load_pickle('./file_model/pkl_files/labels_final.pkl')
+# embed = _load_pickle('./embedded/pkl_files/embeds_final.pkl')
+# labels = _load_pickle('./embedded/pkl_files/labels_final.pkl')
 
 ids = np.arange(len(labels))
 class Faiss:
@@ -44,12 +44,9 @@ class Faiss:
 
 # def facenet_process_img(img):
 #     embedder = FaceNet()
-#     detections = embedder.extract(img)
-#     embed = detections[0]['embedding']
+#     detections = embedder.embeddings([img])
+#     embed = detections[0]
 #     return embed
-
-# img = './data_face/dphu/image_100_dphu.jpg'
-# img2 = './data_face/dphu/image_101_dphu.jpg'
 
 def ArcFace_process_img(img):
     face_rec = ArcFace.ArcFace()
@@ -58,6 +55,7 @@ def ArcFace_process_img(img):
     return emb1
 
 def predict_face(img):
+    # embed_detect = np.array([facenet_process_img(img)])
     embed_detect = np.array([ArcFace_process_img(img)])
     faiss = Faiss('euclidean'  , 512 , np.stack(embed) , labels)
     faiss.add_data()
